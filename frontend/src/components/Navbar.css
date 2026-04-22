@@ -1,0 +1,166 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 80px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212, 175, 106, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-decoration: none;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #1a1a1a, #D4AF6A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.navbar__link {
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.5);
+  transition: color 0.3s;
+}
+
+.navbar__link:hover {
+  color: #D4AF6A;
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.navbar__cart {
+  font-size: 18px;
+  text-decoration: none;
+  position: relative;
+  color: #1a1a1a;
+}
+
+.navbar__badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #D4AF6A, #B8943F);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar__user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navbar__username {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.navbar__logout {
+  background: transparent;
+  border: 1px solid rgba(212, 175, 106, 0.4);
+  color: #D4AF6A;
+  padding: 6px 16px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.navbar__logout:hover {
+  background: linear-gradient(135deg, #D4AF6A, #B8943F);
+  color: #fff;
+  border-color: transparent;
+}
+
+.navbar__auth {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navbar__btn {
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border: 1px solid rgba(212, 175, 106, 0.4);
+  color: #D4AF6A;
+  transition: all 0.3s;
+}
+
+.navbar__btn:hover {
+  background: linear-gradient(135deg, #D4AF6A, #B8943F);
+  color: #fff;
+  border-color: transparent;
+}
+
+.navbar__btn--primary {
+  background: linear-gradient(135deg, #D4AF6A, #B8943F);
+  color: #fff;
+  border-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar__btn--primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-20deg);
+  animation: shimmer 3s infinite;
+}
+
+.navbar__icon {
+  font-size: 18px;
+  text-decoration: none;
+  position: relative;
+  color: #1a1a1a;
+  transition: color 0.3s;
+}
+
+.navbar__icon:hover {
+  color: #D4AF6A;
+}
+

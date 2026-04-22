@@ -1,0 +1,105 @@
+.product-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(212, 175, 106, 0.15);
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(212, 175, 106, 0.15);
+  border-color: rgba(212, 175, 106, 0.3);
+}
+
+.product-card__image {
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+  background: linear-gradient(135deg, #FDF8EE, #F5E6C8);
+  padding: 20px;
+}
+
+.product-card__no-image {
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(135deg, #FDF8EE, #F5E6C8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #D4AF6A;
+}
+
+.product-card__body {
+  padding: 20px;
+}
+
+.product-card__brand {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #D4AF6A;
+  margin-bottom: 8px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.product-card__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+
+.product-card__price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.product-card__notes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.product-card__note {
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(212, 175, 106, 0.2);
+  padding: 4px 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.product-card__fav {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(212, 175, 106, 0.3);
+  color: #D4AF6A;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card__fav:hover {
+  background: #D4AF6A;
+  color: #fff;
+  border-color: #D4AF6A;
+}
