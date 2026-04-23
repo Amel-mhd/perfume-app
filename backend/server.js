@@ -10,6 +10,7 @@ app.use(express.json());
 // Routes
 app.use('/user', require('./routes/user'));
 app.use('/products', require('./routes/products'));
+app.use('/reviews', require('./routes/reviews'));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connecté'))
@@ -19,6 +20,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
-
-const reviewsRouter = require('./routes/reviews');
-app.use('/reviews', reviewsRouter);
