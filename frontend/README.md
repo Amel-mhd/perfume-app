@@ -1,70 +1,178 @@
-# Getting Started with Create React App
+# 🌸 Aura — Maison de Parfums
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Boutique de parfums haut de gamme — Fullstack React & Node.js
 
-## Available Scripts
+![Aura](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat&logo=mongodb)
+![Netlify](https://img.shields.io/badge/Deployed-Netlify-00C7B7?style=flat&logo=netlify)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Aperçu
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Aura** est une boutique de parfums haut de gamme développée en fullstack. Elle propose un catalogue de 74 fragrances issues des plus grandes maisons mondiales (Chanel, Dior, Hermès, YSL, Guerlain...), avec un quiz olfactif personnalisé, un système de favoris, un panier et des avis clients.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+🔗 **[Voir le site en ligne](https://perfume-amel-app.netlify.app)**
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Fonctionnalités
 
-### `npm run build`
+### Catalogue
+- 74 parfums avec images, notes olfactives et accords
+- Recherche en temps réel
+- Filtres par marque, genre, accord olfactif et prix
+- Tri par prix croissant/décroissant et par note
+- Pagination (12 parfums par page)
+- Skeleton loader pendant le chargement
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Parfum
+- Page détail avec pyramide olfactive
+- Parfums similaires
+- Avis et notes clients (★)
+- Bouton "Acheter en ligne"
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Quiz olfactif
+- 4 questions pour trouver votre parfum idéal
+- Algorithme de scoring par accords olfactifs
+- 6 recommandations personnalisées
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Authentification
+- Inscription avec email de confirmation (Gmail)
+- Connexion avec JWT
+- Page profil (infos, changement de mot de passe, suppression de compte)
 
-### `npm run eject`
+### Favoris & Panier
+- Ajout/suppression de favoris (localStorage)
+- Panier avec quantités et total
+- Notifications toast
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Stack Technique
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend
+| Tech | Usage |
+|------|-------|
+| React 18 | Interface utilisateur |
+| React Router | Navigation |
+| Axios | Requêtes API |
+| Context API | État global (Auth, Cart) |
+| CSS vanilla | Styles (glassmorphism, animations) |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Backend
+| Tech | Usage |
+|------|-------|
+| Node.js | Serveur |
+| Express | Framework API REST |
+| MongoDB + Mongoose | Base de données |
+| JWT | Authentification |
+| Bcrypt | Chiffrement des mots de passe |
+| Nodemailer | Emails de confirmation |
 
-## Learn More
+### Déploiement
+| Service | Usage |
+|---------|-------|
+| Netlify | Frontend |
+| Render | Backend |
+| MongoDB Atlas | Base de données cloud |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📁 Structure du projet
 
-### Code Splitting
+```
+perfume-app/
+├── backend/
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Order.js
+│   │   └── Review.js
+│   ├── routes/
+│   │   ├── user.js
+│   │   ├── products.js
+│   │   └── reviews.js
+│   ├── middlewares/
+│   │   └── auth.js
+│   ├── data.json
+│   └── server.js
+└── frontend/
+    └── src/
+        ├── components/
+        │   ├── Navbar.js
+        │   ├── ProductCard.js
+        │   └── Toast.js
+        ├── context/
+        │   ├── AuthContext.js
+        │   └── CartContext.js
+        └── pages/
+            ├── Home.js
+            ├── Catalogue.js
+            ├── ProductDetail.js
+            ├── Quiz.js
+            ├── Favorites.js
+            ├── Cart.js
+            ├── Profile.js
+            ├── Login.js
+            ├── Register.js
+            └── NotFound.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## ⚙️ Installation locale
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Prérequis
+- Node.js 18+
+- MongoDB local ou Atlas
+- Compte Gmail avec App Password
 
-### Making a Progressive Web App
+### Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+cd backend
+npm install
+```
 
-### Advanced Configuration
+Créez un fichier `.env` :
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```env
+MONGODB_URI=mongodb://localhost:27017/perfume
+JWT_SECRET=votre_secret
+EMAIL_USER=votre@gmail.com
+EMAIL_PASS=votre_app_password
+PORT=3001
+```
 
-### Deployment
+```bash
+node server.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Frontend
 
-### `npm run build` fails to minify
+```bash
+cd frontend
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🎨 Design
+
+- **Palette** : Or `#D4AF6A` / Blanc cassé `#FDFAF5` / Noir `#1a1a1a`
+- **Typographies** : Playfair Display (logo), Cormorant Garamond (titres), Montserrat (texte)
+- **Style** : Glassmorphism, orbes animées, shimmer effect
+- **Animations** : CSS transitions, float animations
+
+---
+
+## 👩‍💻 Développé par
+
+**Amel Mehdaoui** — Développeuse Fullstack  
+🔗 [Portfolio](https://amel-mhd.github.io/portfolio) · [GitHub](https://github.com/Amel-mhd) · [LinkedIn](https://linkedin.com/in/amel-mehdaoui)
+
+---
+
+*Projet réalisé dans le cadre de la formation Le Reacteur — Avril 2026*
