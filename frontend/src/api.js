@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://aura-backend-qrhu.onrender.com'
+  : 'http://localhost:3001';
 
 const api = async ({ route, method = 'GET', data = null, token = null }) => {
   const headers = {};

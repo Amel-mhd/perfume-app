@@ -19,3 +19,6 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
+
+const reviewsRouter = require('./routes/reviews');
+app.use('/reviews', reviewsRouter);

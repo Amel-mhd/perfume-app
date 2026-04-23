@@ -50,7 +50,9 @@ function Navbar() {
 
         {user ? (
           <div className="navbar__user">
-            <span className="navbar__username">{user.username}</span>
+            <Link to="/profile" className="navbar__username">
+              {user.username}
+            </Link>
             <button className="navbar__logout" onClick={handleLogout}>
               Déconnexion
             </button>

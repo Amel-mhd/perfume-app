@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from './Toast';
 import './ProductCard.css';
 
 function ProductCard({ product, onClick }) {
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
@@ -17,14 +19,19 @@ function ProductCard({ product, onClick }) {
 
   const toggleFav = (e) => {
     e.stopPropagation();
-    if (!user) return;
+    if (!user) {
+      addToast('Connectez-vous pour ajouter aux favoris', 'error');
+      return;
+    }
     const stored = localStorage.getItem(`favorites_${user.email}`);
     const favs = stored ? JSON.parse(stored) : [];
     let updated;
     if (isFav) {
       updated = favs.filter(p => p.Name !== product.Name);
+      addToast(`${product.Name} retiré des favoris`);
     } else {
       updated = [...favs, product];
+      addToast(`${product.Name} ajouté aux favoris ♡`);
     }
     localStorage.setItem(`favorites_${user.email}`, JSON.stringify(updated));
     setIsFav(!isFav);
@@ -51,7 +58,9 @@ function ProductCard({ product, onClick }) {
       <div className="product-card__body">
         <p className="product-card__brand">{product.Brand}</p>
         <h3 className="product-card__name">{product.Name}</h3>
-        <p className="product-card__price">{product.Price} €</p>
+        <p className="product-card__price">
+          {product.Price ? `${product.Price} €` : ''}
+        </p>
         <div className="product-card__notes">
           {product['General Notes']?.slice(0, 3).map((note, i) => (
             <span key={i} className="product-card__note">{note}</span>

@@ -6,42 +6,18 @@ import api from '../api';
 const PER_PAGE = 12;
 
 const BRANDS = [
-  'Toutes les marques',
-  'Christian Dior',
-  'Chanel',
-  'Guerlain',
-  'Hermès',
-  'Lancôme',
-  'Givenchy',
-  'Giorgio Armani',
-  'Yves Saint Laurent',
-  'Paco Rabanne',
-  'Versace',
-  'El Nabil',
-  'Henry Rose',
-  'Juliet Rose',
-  'Creed',
-  'Amouroud',
-  'ST. Rose',
+  'Christian Dior', 'Chanel', 'Guerlain', 'Hermès', 'Lancôme',
+  'Givenchy', 'Giorgio Armani', 'Yves Saint Laurent', 'Paco Rabanne',
+  'Versace', 'El Nabil', 'Henry Rose', 'Juliet Rose', 'Creed',
+  'Amouroud', 'ST. Rose',
 ];
 
-const GENRES = ['Tous', 'men', 'women', 'unisex'];
+const GENRES = ['men', 'women', 'unisex'];
 
 const ACCORDS = [
-  'Tous',
-  'floral',
-  'woody',
-  'citrus',
-  'musky',
-  'amber',
-  'vanilla',
-  'fresh spicy',
-  'warm spicy',
-  'rose',
-  'oud',
-  'aromatic',
-  'powdery',
-  'gourmand',
+  'floral', 'woody', 'citrus', 'musky', 'amber', 'vanilla',
+  'fresh spicy', 'warm spicy', 'rose', 'oud', 'aromatic',
+  'powdery', 'gourmand',
 ];
 
 function Catalogue() {
@@ -50,11 +26,15 @@ function Catalogue() {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [activeBrand, setActiveBrand] = useState('Toutes les marques');
-  const [activeGenre, setActiveGenre] = useState('Tous');
-  const [activeAccord, setActiveAccord] = useState('Tous');
+  const [showFilters, setShowFilters] = useState(false);
+  const [activeBrands, setActiveBrands] = useState([]);
+  const [activeGenres, setActiveGenres] = useState([]);
+  const [activeAccords, setActiveAccords] = useState([]);
   const [sort, setSort] = useState('default');
   const [page, setPage] = useState(1);
+  const [showTop, setShowTop] = useState(false);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   const fetchProducts = async (query = '') => {
     try {
@@ -65,9 +45,9 @@ function Catalogue() {
         method: 'GET',
       });
       setProducts(data);
-      setActiveBrand('Toutes les marques');
-      setActiveGenre('Tous');
-      setActiveAccord('Tous');
+      setActiveBrands([]);
+      setActiveGenres([]);
+      setActiveAccords([]);
       setSort('default');
     } catch (err) {
       console.error(err);
@@ -76,29 +56,50 @@ function Catalogue() {
     }
   };
 
+  useEffect(() => { fetchProducts(); }, []);
+
+  // Recherche en temps réel
   useEffect(() => {
-    fetchProducts();
+    const timer = setTimeout(() => {
+      fetchProducts(search);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Bouton retour en haut
+  useEffect(() => {
+    const handleScroll = () => setShowTop(window.scrollY > 400);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     let result = [...products];
 
-    if (activeBrand !== 'Toutes les marques') {
-      result = result.filter(p => p.Brand === activeBrand);
+    if (activeBrands.length > 0) {
+      result = result.filter(p => activeBrands.includes(p.Brand));
     }
 
-    if (activeGenre !== 'Tous') {
+    if (activeGenres.length > 0) {
       result = result.filter(p =>
-        p.Gender?.toLowerCase() === activeGenre.toLowerCase()
+        activeGenres.includes(p.Gender?.toLowerCase())
       );
     }
 
-    if (activeAccord !== 'Tous') {
+    if (activeAccords.length > 0) {
       result = result.filter(p =>
-        p['Main Accords']?.some(a =>
-          a.toLowerCase().includes(activeAccord.toLowerCase())
+        activeAccords.some(acc =>
+          p['Main Accords']?.some(a => a.toLowerCase().includes(acc))
         )
       );
+    }
+
+    if (minPrice !== '') {
+      result = result.filter(p => parseFloat(p.Price || 0) >= parseFloat(minPrice));
+    }
+
+    if (maxPrice !== '') {
+      result = result.filter(p => parseFloat(p.Price || 0) <= parseFloat(maxPrice));
     }
 
     if (sort === 'price-asc') {
@@ -111,28 +112,40 @@ function Catalogue() {
 
     setFiltered(result);
     setPage(1);
-  }, [activeBrand, activeGenre, activeAccord, sort, products]);
+  }, [activeBrands, activeGenres, activeAccords, sort, products, minPrice, maxPrice]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    fetchProducts(search);
+  const toggleBrand = (brand) => {
+    setActiveBrands(prev =>
+      prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+    );
+  };
+
+  const toggleGenre = (genre) => {
+    setActiveGenres(prev =>
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+    );
+  };
+
+  const toggleAccord = (accord) => {
+    setActiveAccords(prev =>
+      prev.includes(accord) ? prev.filter(a => a !== accord) : [...prev, accord]
+    );
   };
 
   const resetFilters = () => {
-    setActiveBrand('Toutes les marques');
-    setActiveGenre('Tous');
-    setActiveAccord('Tous');
+    setActiveBrands([]);
+    setActiveGenres([]);
+    setActiveAccords([]);
     setSort('default');
+    setMinPrice('');
+    setMaxPrice('');
     setPage(1);
   };
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-
-  const hasFilters = activeBrand !== 'Toutes les marques' ||
-    activeGenre !== 'Tous' ||
-    activeAccord !== 'Tous' ||
-    sort !== 'default';
+  const activeCount = activeBrands.length + activeGenres.length + activeAccords.length +
+    (minPrice ? 1 : 0) + (maxPrice ? 1 : 0);
 
   return (
     <div className="page">
@@ -142,7 +155,8 @@ function Catalogue() {
       <h1 className="page__title">Catalogue</h1>
       <p className="page__subtitle">Nos fragrances d'exception</p>
 
-      <form className="catalogue__search" onSubmit={handleSearch}>
+      {/* RECHERCHE EN TEMPS RÉEL */}
+      <form className="catalogue__search" onSubmit={(e) => e.preventDefault()}>
         <input
           className="catalogue__input"
           type="text"
@@ -150,67 +164,35 @@ function Catalogue() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="catalogue__btn" type="submit">
-          Rechercher
-        </button>
+        {search && (
+          <button
+            className="catalogue__btn"
+            type="button"
+            onClick={() => setSearch('')}
+          >
+            ×
+          </button>
+        )}
       </form>
-
-      {/* FILTRES PAR MARQUE */}
-      <div className="catalogue__section-label">Marque</div>
-      <div className="catalogue__filters">
-        {BRANDS.map(brand => (
-          <button
-            key={brand}
-            className={`catalogue__filter ${activeBrand === brand ? 'catalogue__filter--active' : ''}`}
-            onClick={() => setActiveBrand(brand)}
-          >
-            {brand}
-          </button>
-        ))}
-      </div>
-
-      {/* FILTRES PAR GENRE */}
-      <div className="catalogue__section-label">Genre</div>
-      <div className="catalogue__filters">
-        {GENRES.map(genre => (
-          <button
-            key={genre}
-            className={`catalogue__filter ${activeGenre === genre ? 'catalogue__filter--active' : ''}`}
-            onClick={() => setActiveGenre(genre)}
-          >
-            {genre === 'Tous' ? 'Tous' :
-             genre === 'men' ? 'Homme' :
-             genre === 'women' ? 'Femme' : 'Unisex'}
-          </button>
-        ))}
-      </div>
-
-      {/* FILTRES PAR ACCORD */}
-      <div className="catalogue__section-label">Accord olfactif</div>
-      <div className="catalogue__filters">
-        {ACCORDS.map(accord => (
-          <button
-            key={accord}
-            className={`catalogue__filter ${activeAccord === accord ? 'catalogue__filter--active' : ''}`}
-            onClick={() => setActiveAccord(accord)}
-          >
-            {accord}
-          </button>
-        ))}
-      </div>
 
       {/* TOOLBAR */}
       <div className="catalogue__toolbar">
         <div className="catalogue__toolbar-left">
+          <button
+            className={`catalogue__filter-btn ${showFilters ? 'catalogue__filter-btn--active' : ''}`}
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            ✦ Filtrer
+            {activeCount > 0 && (
+              <span className="catalogue__filter-count">{activeCount}</span>
+            )}
+          </button>
           <p className="catalogue__count">
             {filtered.length} fragrance{filtered.length !== 1 ? 's' : ''}
-            {activeBrand !== 'Toutes les marques' ? ` · ${activeBrand}` : ''}
-            {activeGenre !== 'Tous' ? ` · ${activeGenre === 'men' ? 'Homme' : activeGenre === 'women' ? 'Femme' : 'Unisex'}` : ''}
-            {activeAccord !== 'Tous' ? ` · ${activeAccord}` : ''}
           </p>
-          {hasFilters && (
+          {activeCount > 0 && (
             <button className="catalogue__reset" onClick={resetFilters}>
-              Réinitialiser les filtres ×
+              Réinitialiser ×
             </button>
           )}
         </div>
@@ -226,8 +208,91 @@ function Catalogue() {
         </select>
       </div>
 
+      {/* PANNEAU FILTRES */}
+      {showFilters && (
+        <div className="catalogue__panel">
+          <div className="catalogue__panel-section">
+            <p className="catalogue__panel-title">Marque</p>
+            <div className="catalogue__panel-options">
+              {BRANDS.map(brand => (
+                <button
+                  key={brand}
+                  className={`catalogue__chip ${activeBrands.includes(brand) ? 'catalogue__chip--active' : ''}`}
+                  onClick={() => toggleBrand(brand)}
+                >
+                  {brand}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="catalogue__panel-section">
+            <p className="catalogue__panel-title">Genre</p>
+            <div className="catalogue__panel-options">
+              {GENRES.map(genre => (
+                <button
+                  key={genre}
+                  className={`catalogue__chip ${activeGenres.includes(genre) ? 'catalogue__chip--active' : ''}`}
+                  onClick={() => toggleGenre(genre)}
+                >
+                  {genre === 'men' ? 'Homme' : genre === 'women' ? 'Femme' : 'Unisex'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="catalogue__panel-section">
+            <p className="catalogue__panel-title">Accord olfactif</p>
+            <div className="catalogue__panel-options">
+              {ACCORDS.map(accord => (
+                <button
+                  key={accord}
+                  className={`catalogue__chip ${activeAccords.includes(accord) ? 'catalogue__chip--active' : ''}`}
+                  onClick={() => toggleAccord(accord)}
+                >
+                  {accord}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="catalogue__panel-section">
+            <p className="catalogue__panel-title">Prix (€)</p>
+            <div className="catalogue__price-range">
+              <input
+                className="catalogue__price-input"
+                type="number"
+                placeholder="Min"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+              <span className="catalogue__price-sep">—</span>
+              <input
+                className="catalogue__price-input"
+                type="number"
+                placeholder="Max"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SKELETON / GRILLE */}
       {loading ? (
-        <div className="loading">Chargement des fragrances...</div>
+        <div className="grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="skeleton-card">
+              <div className="skeleton skeleton--image" />
+              <div className="skeleton-card__body">
+                <div className="skeleton skeleton--text skeleton--short" />
+                <div className="skeleton skeleton--text" />
+                <div className="skeleton skeleton--text skeleton--medium" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <>
           {paginated.length === 0 ? (
@@ -277,6 +342,16 @@ function Catalogue() {
             </div>
           )}
         </>
+      )}
+
+      {/* BOUTON RETOUR EN HAUT */}
+      {showTop && (
+        <button
+          className="scroll-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          ↑
+        </button>
       )}
     </div>
   );
