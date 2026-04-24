@@ -172,7 +172,3 @@ npm start
 
 **Amel Mehdaoui** — Développeuse Fullstack  
 🔗 [Portfolio](https://amel-mhd.github.io/portfolio) · [GitHub](https://github.com/Amel-mhd) · [LinkedIn](https://linkedin.com/in/amel-mehdaoui)
-
----
-
-*Projet réalisé dans le cadre de la formation Le Reacteur — Avril 2026*
